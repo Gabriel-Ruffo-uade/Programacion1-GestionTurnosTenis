@@ -2,6 +2,7 @@ from clientes import menu_clientes
 from profesores import menu_profesores
 from turnos import menu_turnos
 
+#funcion que arma el menu principal
 def mostrar_menu_principal():
     opcion = ""
     while opcion != "0":
@@ -13,6 +14,8 @@ def mostrar_menu_principal():
 
         opcion = input("Seleccione una opción: ")
 
+        #segun la opcion elegida por el usuario muestra un mensaje 
+        # o ejecuta la funcion que muestra un nuevo menu de gestion
         if opcion == "1":
             menu_clientes()
         elif opcion == "2":

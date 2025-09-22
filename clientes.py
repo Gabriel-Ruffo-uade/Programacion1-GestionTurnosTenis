@@ -1,9 +1,14 @@
 from storage import leer_json, escribir_json
+import os
 
-RUTA_CLIENTES = "data/clientes.json"
+# Obtiene el directorio donde está el archivo actual
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+RUTA_CLIENTES = os.path.join(BASE_DIR, "data", "clientes.json")
 
+#funcion que arma el menu para gestionar la informacion de los clientes (estudiantes de tenis)
 def menu_clientes():
-    while True:
+    opcion = ""
+    while opcion != "0":
         print("\n--- MENÚ CLIENTES ---")
         print("1. Listar clientes")
         print("2. Agregar cliente")
@@ -26,6 +31,7 @@ def menu_clientes():
         else:
             print("Opción inválida.")
 
+#lee la lista de clientes que hay guardada
 def listar_clientes():
     clientes = leer_json(RUTA_CLIENTES, [])
     if not clientes:
@@ -34,6 +40,7 @@ def listar_clientes():
         for c in clientes:
             print(f"- {c['id']}: {c['nombre']} ({c['telefono']})")
 
+#agrega un cliente nuevo
 def agregar_cliente():
     clientes = leer_json(RUTA_CLIENTES, [])
     nuevo = {
@@ -45,6 +52,7 @@ def agregar_cliente():
     escribir_json(RUTA_CLIENTES, clientes)
     print("Cliente agregado correctamente.")
 
+#modifica un cliente existente
 def modificar_cliente():
     clientes = leer_json(RUTA_CLIENTES, [])
     listar_clientes()
@@ -58,6 +66,7 @@ def modificar_cliente():
             return
     print("Cliente no encontrado.")
 
+#elimina un cliente
 def eliminar_cliente():
     clientes = leer_json(RUTA_CLIENTES, [])
     listar_clientes()

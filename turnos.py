@@ -1,11 +1,16 @@
 from storage import leer_json, escribir_json
 from clientes import listar_clientes
 from profesores import listar_profesores
+import os
 
-RUTA_TURNOS = "data/turnos.json"
+# Obtiene el directorio donde está el archivo actual
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+RUTA_TURNOS = os.path.join(BASE_DIR, "data", "turnos.json")
 
+#arma el menu para gestionar los turnos
 def menu_turnos():
-    while True:
+    opcion = ""
+    while opcion != "0":
         print("\n--- MENÚ TURNOS ---")
         print("1. Listar turnos")
         print("2. Agregar turno")
@@ -25,6 +30,7 @@ def menu_turnos():
         else:
             print("Opción inválida.")
 
+#lista los turnos guardados
 def listar_turnos():
     turnos = leer_json(RUTA_TURNOS, [])
     if not turnos:
@@ -33,6 +39,7 @@ def listar_turnos():
         for t in turnos:
             print(f"- {t['id']}: Cliente {t['cliente_id']} con Profesor {t['profesor_id']} en {t['fecha_hora']}")
 
+#agrega un turno nuevo
 def agregar_turno():
     turnos = leer_json(RUTA_TURNOS, [])
     listar_clientes()
@@ -51,6 +58,7 @@ def agregar_turno():
     escribir_json(RUTA_TURNOS, turnos)
     print("Turno registrado correctamente.")
 
+#cancela un turno existente
 def cancelar_turno():
     turnos = leer_json(RUTA_TURNOS, [])
     listar_turnos()

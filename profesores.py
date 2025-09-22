@@ -1,9 +1,14 @@
 from storage import leer_json, escribir_json
+import os
 
-RUTA_PROFESORES = "data/profesores.json"
+# Obtiene el directorio donde está el archivo actual
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+RUTA_PROFESORES = os.path.join(BASE_DIR, "data", "profesores.json")
 
+#funcion para mostrar las opciones de gestion para los datos de prfesor de tenis
 def menu_profesores():
-    while True:
+    opcion = ""
+    while opcion != "0":
         print("\n--- MENÚ PROFESORES ---")
         print("1. Listar profesores")
         print("2. Agregar profesor")
@@ -26,6 +31,7 @@ def menu_profesores():
         else:
             print("Opción inválida.")
 
+#lee la informacion del archivo para acceder a los datos del profesor de tenis
 def listar_profesores():
     profesores = leer_json(RUTA_PROFESORES, [])
     if not profesores:
@@ -34,6 +40,7 @@ def listar_profesores():
         for p in profesores:
             print(f"- {p['id']}: {p['nombre']} (Especialidad: {p['especialidad']})")
 
+#escribe los datos de un profesor nuevo
 def agregar_profesor():
     profesores = leer_json(RUTA_PROFESORES, [])
     nuevo = {
@@ -45,6 +52,7 @@ def agregar_profesor():
     escribir_json(RUTA_PROFESORES, profesores)
     print("Profesor agregado correctamente.")
 
+#modifica los datos de un profesor existente
 def modificar_profesor():
     profesores = leer_json(RUTA_PROFESORES, [])
     listar_profesores()
@@ -58,6 +66,7 @@ def modificar_profesor():
             return
     print("Profesor no encontrado.")
 
+#elimina los datos de un profesor
 def eliminar_profesor():
     profesores = leer_json(RUTA_PROFESORES, [])
     listar_profesores()
