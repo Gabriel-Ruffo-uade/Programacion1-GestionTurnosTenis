@@ -14,7 +14,7 @@ def menu_profesores():
         print("2. Agregar profesor")
         print("3. Modificar profesor")
         print("4. Eliminar profesor")
-        print("0. Volver")
+        print("0. Volver\n")
 
         opcion = input("Seleccione una opción: ")
 

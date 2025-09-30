@@ -30,7 +30,7 @@ def menu_turnos():
         print("1. Listar turnos")
         print("2. Agregar turno")
         print("3. Cancelar turno")
-        print("0. Volver")
+        print("0. Volver\n")
 
 
 

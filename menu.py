@@ -10,7 +10,7 @@ def mostrar_menu_principal():
         print("1. Gestionar clientes")
         print("2. Gestionar profesores")
         print("3. Gestionar turnos")
-        print("0. Salir")
+        print("0. Salir\n")
 
         opcion = input("Seleccione una opción: ")
 

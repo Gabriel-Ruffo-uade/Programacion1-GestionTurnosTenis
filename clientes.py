@@ -14,7 +14,7 @@ def menu_clientes():
         print("2. Agregar cliente")
         print("3. Modificar cliente")
         print("4. Eliminar cliente")
-        print("0. Volver")
+        print("0. Volver\n")
 
         opcion = input("Seleccione una opción: ")
 
