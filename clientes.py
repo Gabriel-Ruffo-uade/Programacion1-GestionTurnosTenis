@@ -37,17 +37,20 @@ def listar_clientes():
     if not clientes:
         print("No hay clientes registrados.")
     else:
-        for c in clientes:
-            print(f"- {c['id']}: {c['nombre']} ({c['telefono']})")
+        for cliente in clientes:
+            print(f"- {cliente['id']}: {cliente['nombre']} ({cliente['telefono']})")
 
 #agrega un cliente nuevo
 def agregar_cliente():
     clientes = leer_json(RUTA_CLIENTES, [])
+    
+    # Pendiente: Validar que  no se ingresen strings vacíos
     nuevo = {
         "id": len(clientes) + 1,
         "nombre": input("Nombre del cliente: "),
         "telefono": input("Teléfono: ")
     }
+    
     clientes.append(nuevo)
     escribir_json(RUTA_CLIENTES, clientes)
     print("Cliente agregado correctamente.")
@@ -56,21 +59,35 @@ def agregar_cliente():
 def modificar_cliente():
     clientes = leer_json(RUTA_CLIENTES, [])
     listar_clientes()
-    id_mod = int(input("Ingrese el ID del cliente a modificar: "))
-    for c in clientes:
-        if c["id"] == id_mod:
-            c["nombre"] = input(f"Nuevo nombre ({c['nombre']}): ") or c["nombre"]
-            c["telefono"] = input(f"Nuevo teléfono ({c['telefono']}): ") or c["telefono"]
-            escribir_json(RUTA_CLIENTES, clientes)
-            print("Cliente modificado.")
-            return
-    print("Cliente no encontrado.")
-
+    
+    try:
+        id_mod = int(input("Ingrese el ID del cliente a modificar: "))
+        for cliente in clientes:
+            if cliente["id"] == id_mod:
+                # Pendiente: Validar que no se ingresen strings vacíos
+                cliente["nombre"] = input(f"Nuevo nombre ({cliente['nombre']}): ") or cliente["nombre"]
+                cliente["telefono"] = input(f"Nuevo teléfono ({cliente['telefono']}): ") or cliente["telefono"]
+                escribir_json(RUTA_CLIENTES, clientes)
+                print("Cliente modificado.")
+                return
+            else:
+                print("Cliente no encontrado.")
+    except ValueError:
+        print("ID inválido. Ingresar solo valores numéricos.")
+        
 #elimina un cliente
 def eliminar_cliente():
     clientes = leer_json(RUTA_CLIENTES, [])
     listar_clientes()
-    id_del = int(input("Ingrese el ID del cliente a eliminar: "))
-    clientes = [c for c in clientes if c["id"] != id_del]
-    escribir_json(RUTA_CLIENTES, clientes)
-    print("Cliente eliminado.")
+    try:
+        id_del = int(input("Ingrese el ID del cliente a eliminar: "))
+        clientes_originales = len(clientes)
+        clientes = [cliente for cliente in clientes if cliente["id"] != id_del]
+        
+        if len(clientes) < clientes_originales:
+            escribir_json(RUTA_CLIENTES, clientes)
+            print("Cliente eliminado.")
+        else:
+            print("Cliente no encontrado.")
+    except ValueError:
+        print("ID inválido. Ingresar solo valores numéricos.")
