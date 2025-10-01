@@ -5,6 +5,7 @@ import os
 
 
 
+
 # Obtiene el directorio donde está el archivo actual
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RUTA_TURNOS = os.path.join(BASE_DIR, "data", "turnos.json")
@@ -94,7 +95,7 @@ def agregar_turno():
     print("Ingrese el ID del profesor: ")
     profesor_id = obtener_id(RUTA_PROFESORES)
 
-    fecha_hora = input("Ingrese fecha y hora (ej. 2025-09-21 15:00): ")
+    fecha_hora = obtener_fecha()
 
 
 
@@ -156,8 +157,38 @@ def obtener_id(archivo):
                     if i['id'] == id:
                         return id
                 print('Esta id no existe, ingresar id válida por favor')
-
-        
             
-    
 #fin
+
+
+
+
+
+def obtener_fecha():
+
+    print("Ingrese fecha y hora (ej. 2025-09-21 15:00): ")
+
+    while True: #repetir hasta que se inputee lo correcto
+
+        fecha = input()
+
+  
+        
+
+        #------------------
+
+        if verifica:
+
+            
+            
+
+                
+            print("No es una fecha valída") #si es que falla el verificar y no sale de la funcion con el return, entonces envia este mesaje y loopea
+            
+
+        else:
+            print("Formato incorrecto, tiene que ser aaaa-mm-dd hh:mm")     
+#fin
+
+
+
