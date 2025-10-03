@@ -1,9 +1,7 @@
 from storage import leer_json, escribir_json
-import re
+from validaciones import es_texto_valido, es_fecha_hora_valida, es_telefono_valido, es_id_valido
 
 # Solicta y valida datos numericos ingresados por el usuario
-# Se puede urtilizar para solicitar los campos documento, telefono, edad, cliente_id, etc.
-# En la proxima entrega se puede cambiar el bucle While por recursividad
 def solicitar_entero(mensaje, minimo=0, maximo=None):
     """
     Solicita un número entero al usuario con validación.
@@ -16,81 +14,133 @@ def solicitar_entero(mensaje, minimo=0, maximo=None):
     Retorna:
         int: Número entero válido ingresado por el usuario
     """
+    valido = False
+    numero = 0
 
-    while True:
+    while not valido:
         try:
-            valor = int(input(mensaje))
+            numero = int(input(mensaje))
             
-            if minimo is not None and valor < minimo:
+            if minimo is not None and numero < minimo:
                 print(f"El valor debe ser mayor o igual a {minimo}")
-                continue
                 
-            if maximo is not None and valor > maximo:
+            elif maximo is not None and numero > maximo:
                 print(f"El valor debe ser menor o igual a {maximo}")
-                continue
-                
-            return valor
-            
+            else:
+                valido = True
         except ValueError:
             print("Error: Debe ingresar un número entero válido")
-
+    
+    return numero
 
 # Solicta y valida textos ingresados por el usuario
-# Se puede urtilizar para solicitar los campos nombre, apellido, direccion, etc.
-# En la proxima entrega se puede cambiar el bucle While por recursividad
+# Se puede urtilizar para solicitar los campos nombre, especialidad, etc.
 def solicitar_texto(mensaje, longitud_minima=0):
     """
     Solicita texto al usuario con validación de caracteres alfabéticos y signos de puntuación.
-    
+
     Argumentos:
         mensaje (str): Mensaje a mostrar al usuario
-        longitud_minima (int, optional): Longitud mínima del texto
+        longitud_minima (int, optional): Longitud mínima permitida
     
     Retorna:
         str: Texto válido ingresado por el usuario
     """
-    while True:
+    valido = False
+    texto = ""
+
+    while not valido:
         texto = input(mensaje).strip()
         
         if len(texto) < longitud_minima:
             print(f"El valor debe tener al menos {longitud_minima} caracteres")
-            continue
-        
-        # Valida con una expresion regular que solo contenga caracteres alfabéticos, espacios y signos de puntuación
-        if not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.,;:!?()-]+$', texto):
-            print("El valor solo puede contener letras, espacios y signos de puntuación (.,;:!?()-)")
-            continue
-            
-        return texto
 
-
-# Solicta y valida fechas y horas ingresados por el usuario
-# Se puede urtilizar para solicitar el campo fecha_hora de turnos.
-# En la proxima entrega se puede cambiar el bucle While por recursividad
-def solicitar_fecha_hora(mensaje):
-    """
-    Solicita fecha y hora al usuario con validación usando regex.
+        elif not es_texto_valido(texto):
+            print("El valor solo puede contener letras y espacios")
+        else:
+            valido = True
     
+    return texto
+
+# Solicta y valida telefonos ingresados por el usuario
+def solicitar_telefono(mensaje):
+    """
+    Solicita un numero de telefono al usuario validando el formato argentino.
+
     Argumentos:
         mensaje (str): Mensaje a mostrar al usuario
     
     Retorna:
-        str: Fecha y hora en formato válido
+        str: Telefono válido ingresado por el usuario
     """
-    while True:
-        fecha_hora = input(mensaje).strip()
+    valido = False
+    telefono = ""
+    
+    while not valido:
+        telefono = input(mensaje).strip()
         
+        if not es_telefono_valido(telefono):
+            print("Teléfono inválido. Debe tener 10 dígitos (ej. 1123456789)")
+        else:
+            valido = True
+    
+    return telefono
+            
+
+# Solicta y valida fechas y horas ingresados por el usuario
+def solicitar_fecha_hora(mensaje):
+    """
+    Solicita fecha y hora al usuario validando el formato YYYY-MM-DD HH:MM.
+
+    Argumentos:
+        mensaje (str): Mensaje a mostrar al usuario
+    
+    Retorna:
+        str: Fecha y hora válida ingresada por el usuario
+
+    """
+    fecha_hora = ""
+
+    valido = False
+    while not valido:
+        fecha_hora = input(mensaje).strip()
+
         if not fecha_hora:
             print("La fecha y hora no pueden estar vacías")
-            continue
+
+        elif not es_fecha_hora_valida(fecha_hora):
+            print("Formato inválido. Use: YYYY-MM-DD HH:MM (ej. 2025-09-21 15:00)")
+
+        else:
+            valido = True
+
+    return fecha_hora
+
+# Solicta y valida ids ingresados por el usuario
+def solicitar_id(mensaje, ruta_archivo):
+    """
+    Solicita un id valido al usuario.
+
+    Argumentos:
+        mensaje (str): Mensaje a mostrar al usuario
+        ruta_archivo (str): Ruta del archivo JSON
+    
+    Retorna:
+        int: Id válido ingresado por el usuario
+    """
+    valido = False
+    id = ""
+    
+    while not valido:
+        id = input(mensaje).strip()
         
-        # Valida con una expresion regular que tenga el formato YYYY-MM-DD HH:MM
-        patron = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$'
-        if not re.match(patron, fecha_hora):
-            print("Formato inválido. Use el formato: YYYY-MM-DD HH:MM (ej. 2025-09-21 15:00)")
-            continue
-            
-        return fecha_hora
+        if not es_id_valido(ruta_archivo, id):
+            print("Id inválido")
+
+        else:
+            valido = True
+
+    return id
 
 
 # Agrega un nuevo registro al archivo
@@ -131,17 +181,19 @@ def eliminar_registro(ruta_archivo, id):
     Retorna:
         bool: True si se eliminó correctamente, False si no se encontró u ocurrió un error
     """
+    eliminado = False
+
     entidades = leer_json(ruta_archivo, [])
 
     # Filtrar y eliminar el registro
     entidades_originales = len(entidades)
-    entidades = [e for e in entidades if e.get("id") != id]
+    entidades = [e for e in entidades if e['id'] != id]
     
     if len(entidades) < entidades_originales:
         escribir_json(ruta_archivo, entidades)
-        return True
-    else:
-        return False
+        eliminado = True
+    
+    return eliminado
 
 
 # Genera un ID único para un nuevo registro de la lista.
@@ -155,9 +207,16 @@ def generar_id(lista_registros):
     Retorna:
         int: Nuevo ID
     """
-    if not lista_registros:
-        return 1
-    
-    # Encontrar el ID máximo y sumar 1
-    ids_existentes = [registro.get('id', 0) for registro in lista_registros]
-    return max(ids_existentes) + 1
+
+    nuevo_id = 1
+
+    if lista_registros:
+        ids_existentes = []
+        for r in lista_registros:
+            if 'id' in r:
+                ids_existentes.append(r['id'])
+
+        if ids_existentes:
+            nuevo_id = max(ids_existentes) + 1
+
+    return nuevo_id
