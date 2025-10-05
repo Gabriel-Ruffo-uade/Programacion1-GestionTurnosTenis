@@ -1,4 +1,5 @@
 from storage import leer_json, escribir_json
+from validaciones import validar_turno, es_id_valido, es_nombre_valido
 import os
 
 # Obtiene el directorio donde está el archivo actual
@@ -38,16 +39,29 @@ def listar_profesores():
         print("No hay profesores registrados.")
     else:
         for p in profesores:
-            print(f"- {p['id']}: {p['nombre']} (Especialidad: {p['especialidad']})")
+            print(f"- {p['id']}: {p['nombre']} (Turno: {p['turno']})")
 
 #escribe los datos de un profesor nuevo
 def agregar_profesor():
     profesores = leer_json(RUTA_PROFESORES, [])
+
+    nombre = input("Nombre del profesor: ").strip()
+    while not es_nombre_valido(nombre):
+        print("El nombre no puede estar vacío. Intente nuevamente.")
+        nombre = input("Nombre del profesor: ").strip()
+
+    turno = input("Turno (Mañana/Tarde/Noche): ")
+    while not validar_turno(turno):
+        print("Turno inválido. Por favor, seleccione entre (Mañana/Tarde/Noche).")
+        turno = input("Turno (Mañana/Tarde/Noche): ")
+    turno = turno.capitalize()
+
     nuevo = {
         "id": len(profesores) + 1,
-        "nombre": input("Nombre del profesor: "),
-        "especialidad": input("Especialidad: ")
+        "nombre": nombre,
+        "turno": turno
     }
+
     profesores.append(nuevo)
     escribir_json(RUTA_PROFESORES, profesores)
     print("Profesor agregado correctamente.")
@@ -55,22 +69,60 @@ def agregar_profesor():
 #modifica los datos de un profesor existente
 def modificar_profesor():
     profesores = leer_json(RUTA_PROFESORES, [])
+
+    if not profesores:
+        print("No hay profesores registrados. Registre uno antes de poder modificar.")
+        return
+
     listar_profesores()
-    id_mod = int(input("Ingrese el ID del profesor a modificar: "))
+
+    id_mod = None
+    while id_mod is None or not es_id_valido(RUTA_PROFESORES, id_mod):
+        entrada = input("Ingrese el ID del profesor a modificar: ")
+        try:
+            id_mod = int(entrada)
+            if not es_id_valido(RUTA_PROFESORES, id_mod):
+                print("ID no válido. Intente nuevamente.")
+        except ValueError:
+            print("Debe ingresar un número entero.")
+
     for p in profesores:
         if p["id"] == id_mod:
             p["nombre"] = input(f"Nuevo nombre ({p['nombre']}): ") or p["nombre"]
-            p["especialidad"] = input(f"Nueva especialidad ({p['especialidad']}): ") or p["especialidad"]
+
+            turno_ingresado = input(f"Nuevo turno ({p['turno']}): ")
+            if turno_ingresado:
+                while not validar_turno(turno_ingresado):
+                    print("Turno inválido. Por favor, seleccione entre (Mañana/Tarde/Noche).")
+                    turno_ingresado = input("Nuevo turno (Mañana/Tarde/Noche): ")
+                p["turno"] = turno_ingresado.capitalize()
+
             escribir_json(RUTA_PROFESORES, profesores)
             print("Profesor modificado.")
             return
-    print("Profesor no encontrado.")
+
 
 #elimina los datos de un profesor
 def eliminar_profesor():
     profesores = leer_json(RUTA_PROFESORES, [])
+
+    if not profesores:
+        print("No hay profesores registrados. Registre uno antes de poder eliminar.")
+        return
+
     listar_profesores()
-    id_del = int(input("Ingrese el ID del profesor a eliminar: "))
+
+    id_del = None
+
+    while id_del is None or not es_id_valido(RUTA_PROFESORES, id_del):
+        entrada = input("Ingrese el ID del profesor a eliminar: ")
+        try:
+            id_del = int(entrada)
+            if not es_id_valido(RUTA_PROFESORES, id_del):
+                print("ID no válido o no encontrado. Intente nuevamente.")
+        except ValueError:
+            print("Error: Por favor ingrese un número entero.")
+
     profesores = [p for p in profesores if p["id"] != id_del]
     escribir_json(RUTA_PROFESORES, profesores)
-    print("Profesor eliminado.")
+    print("Profesor eliminado correctamente.")

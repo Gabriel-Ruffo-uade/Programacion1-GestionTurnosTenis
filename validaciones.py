@@ -116,3 +116,38 @@ def es_id_valido(ruta_archivo, id):
                 break
 
     return valido
+
+def validar_turno(turno):
+    if turno.lower() in ["mañana", "tarde", "noche"]:
+        return True
+    return False
+
+def es_id_valido(ruta_archivo, id):
+    """
+    Valida que un id sea un número entero positivo y exista en el archivo indicado.
+
+    Argumentos:
+        ruta_archivo (str): Ruta del archivo JSON donde buscar
+        id (int): Id a validar
+    
+    Retorna:
+        bool: True si el id es válido, False si no lo es
+    """
+    if not isinstance(id, int) or id <= 0:
+        return False
+
+    datos = leer_json(ruta_archivo, [])
+
+    return any(item["id"] == id for item in datos)
+
+def es_nombre_valido(nombre):
+    """
+    Valida que el nombre no esté vacío ni sea solo espacios.
+    
+    Argumentos:
+        nombre (str): Nombre a validar
+    
+    Retorna:
+        bool: True si el nombre es válido, False si no
+    """
+    return bool(nombre and nombre.strip())
