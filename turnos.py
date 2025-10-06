@@ -1,6 +1,7 @@
 from storage import leer_json, escribir_json
 from clientes import listar_clientes
 from profesores import listar_profesores
+from utils import solicitar_fecha_hora, solicitar_id
 import os
 
 
@@ -88,14 +89,12 @@ def agregar_turno():
 
 
     listar_clientes()
-    print("Ingrese el ID del cliente: ")
-    cliente_id = obtener_id(RUTA_CLIENTES)
+    cliente_id = solicitar_id("Ingrese el ID del cliente: ",RUTA_CLIENTES)
 
     listar_profesores()
-    print("Ingrese el ID del profesor: ")
-    profesor_id = obtener_id(RUTA_PROFESORES)
+    profesor_id = solicitar_id("Ingrese el ID del profesor: ",RUTA_PROFESORES)
 
-    fecha_hora = obtener_fecha()
+    fecha_hora = solicitar_fecha_hora("Ingrese fecha y hora (ej. 2025-09-21 15:00): ")
 
 
 
@@ -128,67 +127,6 @@ def cancelar_turno():
     print("Turno cancelado.")
 #fin
 
-
-
-
-
-#otras funciones-------------------------------------------------------------------------------------
-
-
-
-
-
-def obtener_id(archivo):
-
-    while True: #repetir hasta que se inputee lo correcto
-
-        try:
-            id = int(input())
-
-        except:
-            print('Solo numeros positivos, por favor') #si la id no es un numero int() da error
-
-        else:
-            if id > 0:
-
-                #luego revisar si existe
-                contenido = leer_json(archivo, [])
-                for i in contenido:
-                    if i['id'] == id:
-                        return id
-                print('Esta id no existe, ingresar id válida por favor')
-            
-#fin
-
-
-
-
-
-def obtener_fecha():
-
-    print("Ingrese fecha y hora (ej. 2025-09-21 15:00): ")
-
-    while True: #repetir hasta que se inputee lo correcto
-
-        fecha = input()
-
-  
-        
-
-        #------------------
-
-        if verifica:
-
-            
-            
-
-                
-            print("No es una fecha valída") #si es que falla el verificar y no sale de la funcion con el return, entonces envia este mesaje y loopea
-            
-
-        else:
-            print("Formato incorrecto, tiene que ser aaaa-mm-dd hh:mm")     
-#fin
 
 
 
