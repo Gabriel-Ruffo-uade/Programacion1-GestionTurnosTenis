@@ -96,7 +96,7 @@ def es_telefono_valido(telefono):
 
     return valido
 
-def es_id_valido(ruta_archivo, id):
+def es_id_existente(ruta_archivo, id):
     """
     Valida que un id sea un numero entero positivo y exista en el archivo indicado.
 
@@ -111,7 +111,7 @@ def es_id_valido(ruta_archivo, id):
     if id.isdigit() and int(id) > 0:
         contenido = leer_json(ruta_archivo, [])
         for i in contenido:
-            if i['id'] == id:
+            if i['id'] == int(id):
                 valido = True
                 break
 

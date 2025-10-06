@@ -1,5 +1,5 @@
 from storage import leer_json, escribir_json
-from validaciones import es_texto_valido, es_fecha_hora_valida, es_telefono_valido, es_id_valido
+from validaciones import es_texto_valido, es_fecha_hora_valida, es_telefono_valido, es_id_existente
 
 # Solicta y valida datos numericos ingresados por el usuario
 def solicitar_entero(mensaje, minimo=0, maximo=None):
@@ -134,7 +134,7 @@ def solicitar_id(mensaje, ruta_archivo):
     while not valido:
         id = input(mensaje).strip()
         
-        if not es_id_valido(ruta_archivo, id):
+        if not es_id_existente(ruta_archivo, id):
             print("Id inválido")
 
         else:
