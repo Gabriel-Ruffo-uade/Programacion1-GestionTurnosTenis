@@ -116,7 +116,7 @@ def solicitar_fecha_hora(mensaje):
 
     return fecha_hora
 
-# Solicta y valida ids ingresados por el usuario
+# Solicita y valida ids ingresados por el usuario
 def solicitar_id(mensaje, ruta_archivo):
     """
     Solicita un id valido al usuario.

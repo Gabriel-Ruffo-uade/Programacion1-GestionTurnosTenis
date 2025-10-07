@@ -1,5 +1,6 @@
 from storage import leer_json, escribir_json
 import os
+from utils import solicitar_texto, solicitar_telefono, generar_id
 
 # Obtiene el directorio donde está el archivo actual
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -38,17 +39,16 @@ def listar_clientes():
         print("No hay clientes registrados.")
     else:
         for cliente in clientes:
-            print(f"- {cliente['id']}: {cliente['nombre']} ({cliente['telefono']})")
+            print(f"- {cliente['id']}: {cliente['nombre']} Tel: {cliente['telefono']}")
 
 #agrega un cliente nuevo
 def agregar_cliente():
     clientes = leer_json(RUTA_CLIENTES, [])
     
-    # Pendiente: Validar que  no se ingresen strings vacíos
     nuevo = {
-        "id": len(clientes) + 1,
-        "nombre": input("Nombre del cliente: "),
-        "telefono": input("Teléfono: ")
+        "id": generar_id(clientes),
+        "nombre": solicitar_texto("Nombre del cliente: ", 4),
+        "telefono": solicitar_telefono("Teléfono: ")
     }
     
     clientes.append(nuevo)
@@ -64,7 +64,7 @@ def modificar_cliente():
         id_mod = int(input("Ingrese el ID del cliente a modificar: "))
         for cliente in clientes:
             if cliente["id"] == id_mod:
-                # Pendiente: Validar que no se ingresen strings vacíos
+                print("Dejar en blanco para no modificar.")
                 cliente["nombre"] = input(f"Nuevo nombre ({cliente['nombre']}): ") or cliente["nombre"]
                 cliente["telefono"] = input(f"Nuevo teléfono ({cliente['telefono']}): ") or cliente["telefono"]
                 escribir_json(RUTA_CLIENTES, clientes)
@@ -75,7 +75,6 @@ def modificar_cliente():
     except ValueError:
         print("ID inválido. Ingresar solo valores numéricos.")
         
-#elimina un cliente
 def eliminar_cliente():
     clientes = leer_json(RUTA_CLIENTES, [])
     listar_clientes()
