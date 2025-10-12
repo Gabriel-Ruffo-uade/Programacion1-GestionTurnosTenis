@@ -79,7 +79,9 @@ def solicitar_telefono(mensaje):
     while not valido:
         telefono = input(mensaje).strip()
         
-        if not es_telefono_valido(telefono):
+        if not telefono.isdigit():
+            print("El teléfono solo puede contener números")
+        elif not  es_telefono_valido(telefono):
             print("Teléfono inválido. Debe tener 10 dígitos (ej. 1123456789)")
         else:
             valido = True
