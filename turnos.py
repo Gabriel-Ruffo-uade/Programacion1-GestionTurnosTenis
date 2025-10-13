@@ -89,49 +89,35 @@ def cancelar_turno():
 #funcion para turnos----------------------------------------------------------------------------------------
 #matriz de turnos
 def matriz_turnos():
-    """
-    Muestra una matriz 7x3 que representa la disponibilidad de turnos de los profesores.
-    Los días son filas y los turnos (mañana, tarde, noche) son columnas.
-    """
-    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
-    turnos = ["Mañana", "Tarde", "Noche"]
+    turnos = leer_json(RUTA_TURNOS)
+    clientes = leer_json(RUTA_CLIENTES)
+    profesores = leer_json(RUTA_PROFESORES)
 
-    # Crear una matriz vacia (7 filas x 3 columnas)
-    matriz = [["-" for _ in range(len(turnos))] for _ in range(len(dias))]
+    if not turnos:
+        print("\nNo hay turnos registrados.\n")
+        return []
 
-    # Leer los turnos guardados en el JSON
-    registros_turnos = leer_json(RUTA_TURNOS, [])
+    # Crear diccionarios para buscar nombre por ID
+    clientes_dict = {str(c["id"]): c["nombre"] for c in clientes}
+    profesores_dict = {str(p["id"]): p["nombre"] for p in profesores}
 
-    # Completar la matriz en base a los turnos existentes
-    for t in registros_turnos:
-        profesor_id = t["profesor_id"]
-        cliente_id = t["cliente_id"]
-        fecha_hora = t["fecha_hora"]
+    # --- Crear la matriz ---
+    matriz = []
+    for turno in turnos:
+        fecha_hora = turno.get("fecha_hora", "Sin fecha")
+        cliente_nombre = clientes_dict.get(str(turno["cliente_id"]), "Desconocido")
+        profesor_nombre = profesores_dict.get(str(turno["profesor_id"]), "Desconocido")
+        fila = [fecha_hora, cliente_nombre, profesor_nombre]  # fila de la matriz
+        matriz.append(fila)
 
-        # Determinar dia y turno segun la fecha (simplificado)
-        try:
-            fecha = datetime.datetime.strptime(fecha_hora, "%Y-%m-%d %H:%M")
-            dia_semana = fecha.weekday()  # 0 = Lunes, 6 = Domingo
-            hora = fecha.hour
-
-            if hora < 12:
-                col = 0  # Mañana
-            elif hora < 18:
-                col = 1  # Tarde
-            else:
-                col = 2  # Noche
-
-            # Mostrar ID del profesor y del cliente.
-            matriz[dia_semana][col] = f"Prof {profesor_id} (Cli {cliente_id})"
-
-        except Exception as e:
-            print(f"Error procesando la matriz de turnos {t['id']}: {e}")
-
-    # Mostrar matriz formateada
-    print("\n=== MATRIZ DE TURNOS ===")
-    print(f"{'Día':<12} {' | '.join(turnos)}")
+    # --- Mostrar la matriz en formato tabla ---
+    print("\n" + "-" * 50)
+    print(f"{'TURNO':<20} {'CLIENTE':<15} {'PROFESOR':<15}")
     print("-" * 50)
-    for i, dia in enumerate(dias):#se utiliza enumerate para recorrer el objeto dia dentro de dias con el for
-        print(f"{dia:<12} {' | '.join(matriz[i])}")
-    print()
+
+    for fila in matriz:
+        print(f"{fila[0]:<20} {fila[1]:<15} {fila[2]:<15}")
+
+    print("-" * 50)
+    return matriz
 #fin
