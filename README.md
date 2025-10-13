@@ -19,11 +19,11 @@ Aplicación por consola para gestionar la reserva de turnos de clases de tenis. 
 
 ## 👥 Roles
 
-* **Gabriel Ruffo**: Dev lead/Documentation Manager 
-* **Belén De Amorrortu**: Backend Developer
-* **Santiago Oven**: QA Tester
-* **Diana Mottura**: Data Manager
-* **Martín Citoler**: Backend Developer/CLI Designer.
+* **Project leader**: Amorrortu Belèn 
+* **Desarrollador**: Mottura Diana
+* **QA tester**: Oven Santiago
+* **Analista funcional**: Citoler Martìn
+* **Documentación**: Ruffo Eduardo Gabriel
 
 ---
 
