@@ -64,7 +64,7 @@ Cada submenú permite **listar, agregar, modificar o eliminar** registros.
 
 * **Agregar Cliente**
 
-  * Entrada: `Nombre, Edad`
+  * Entrada: `Nombre, Numero`
   * Salida: Cliente agregado a `Clientes.json`.
 
 ---
@@ -72,19 +72,25 @@ Cada submenú permite **listar, agregar, modificar o eliminar** registros.
 ## ⚙️ Estructura del Proyecto
 
 ```
-/Programacion1-GestionTurnosTenis
-│── main.py
-│── clientes.py
-│── profesores.py
-│── turnos.py
-│── utils.py          # funciones de validación y helpers
-│── Clientes.json
-│── Profesores.json
-│── Turnos.json
+Programacion1-GestionTurnosTenis/
+│
+├── Programacion1-GestionTurnosTenis-main/
+│   ├── data/
+│   │   ├── clientes.json
+│   │   ├── profesores.json
+│   │   ├── turnos.json
+│   ├── clientes.py
+│   ├── main.py
+│   ├── menu.py
+│   ├── profesores.py
+│   ├── storage.py
+│   ├── turnos.py
+│   ├── utils.py
+│   ├── validaciones.py
 ```
 
-* `utils.py`: centraliza funciones de validación (ej. validar nombre no vacío, edad > 0, turno válido, fecha/hora).
-* Cada módulo (`clientes`, `profesores`, `turnos`) implementa sus funciones CRUD apoyándose en `utils`.
+* `utils.py` y `validaciones.py`: centraliza funciones de validación (ej. validar nombre no vacío, edad > 0, turno válido, fecha/hora).
+* Cada módulo (`clientes`, `profesores`, `turnos`) implementa sus funciones CRUD apoyándose en `utils` y `validaciones.py`.
 
 ---
 
@@ -98,7 +104,7 @@ Cada submenú permite **listar, agregar, modificar o eliminar** registros.
 
   * `nombre` (string, obligatorio, no vacío)
   * `turno` (string: `"Mañana"`, `"Tarde"`, `"Noche"`)
-* **Validaciones (`utils`)**:
+* **Validaciones (`utils` y `validaciones.py`)**:
 
   * Nombre no vacío (`validar_nombre`)
   * Turno debe ser uno de los valores válidos (`validar_turno`)
@@ -136,7 +142,7 @@ Cada submenú permite **listar, agregar, modificar o eliminar** registros.
 
   * `nombre` (string, obligatorio)
   * `edad` (int > 0)
-* **Validaciones (`utils`)**:
+* **Validaciones (`utils` y `validaciones.py`)**:
 
   * Nombre no vacío
   * Edad mayor a 0
@@ -159,16 +165,14 @@ Cada submenú permite **listar, agregar, modificar o eliminar** registros.
 
   * `id_cliente`
   * `id_profesor`
-  * `fecha` (`dd/mm/yyyy`)
-  * `hora` (`hh:mm`)
-* **Validaciones (`utils`)**:
+  * `fecha y hora` (`dd/mm/yyyy hh:mm`)
+* **Validaciones (`utils` y `validaciones.py`)**:
 
   * Cliente y profesor deben existir
-  * Fecha no puede estar ocupada
   * Formato válido de fecha y hora
 * **Ejemplo**:
 
-  * Entrada: `id_cliente=1, id_profesor=2, fecha=15/10/2025, hora=10:00`
+  * Entrada: `id_cliente=1, id_profesor=2, fechayhora=15/10/2025`
   * Salida: turno agregado a `Turnos.json`
 
 #### Modificación
@@ -183,6 +187,10 @@ Cada submenú permite **listar, agregar, modificar o eliminar** registros.
 
 * Elimina turno por `id`.
 
+#### Matriz turnos
+
+* Lista los `turnos` junto con su respectivo `cliente` y `profesor`.
+
 ---
 
 ## ✅ Validaciones Generales
@@ -191,7 +199,7 @@ Cada submenú permite **listar, agregar, modificar o eliminar** registros.
 * Nombres no vacíos.
 * Edad > 0.
 * Turnos válidos (`Mañana/Tarde/Noche`).
-* Fechas y horas con formato correcto (`dd/mm/yyyy`, `hh:mm`).
+* Fechas y horas con formato correcto (`dd/mm/yyyy hh:mm`).
 * JSON creados automáticamente si no existen.
 
 ---
