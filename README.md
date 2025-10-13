@@ -19,11 +19,11 @@ Aplicación por consola para gestionar la reserva de turnos de clases de tenis. 
 
 ## 👥 Roles
 
-* **Gabriel Ruffo**: estructura del proyecto, archivos de almacenamiento y funciones de lectura/escritura.
-* **Belén De Amorrortu**: algoritmos de búsqueda, modificación y solicitud de datos.
-* **Santiago Oven**: lectura, creación y modificación de **Profesores**.
-* **Diana Mottura**: lectura, creación y modificación de **Clientes**.
-* **Martín Citoler**: lectura, creación y modificación de **Turnos**.
+* **Gabriel Ruffo**: Dev lead/Documentation Manager 
+* **Belén De Amorrortu**: Backend Developer
+* **Santiago Oven**: QA Tester
+* **Diana Mottura**: Data Manager
+* **Martín Citoler**: Backend Developer/CLI Designer.
 
 ---
 
@@ -114,7 +114,7 @@ Cada submenú permite **listar, agregar, modificar o eliminar** registros.
 * **Ejemplo**:
 
   * Entrada: `id=2, nombre="Carlos López", turno="Tarde"`
-  * Salida: Profesor actualizado
+  * Salida: Profesor actualizado correctamente
 
 #### Lectura
 
