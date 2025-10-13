@@ -1,1 +1,7 @@
-[]
+[
+    {
+        "id": 1,
+        "nombre": "jirafales",
+        "turno": "Mañana"
+    }
+]
