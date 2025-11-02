@@ -21,6 +21,7 @@ def menu_turnos():
         print("2. Agregar turno")
         print("3. Cancelar turno")
         print("4. Ver matriz de turnos")
+        print("5. Estadisticas de turnos")
         print("0. Volver\n")
 
         opcion = input("Seleccione una opción: ")
@@ -33,6 +34,8 @@ def menu_turnos():
             cancelar_turno()        
         elif opcion == "4":
             matriz_turnos()
+        elif opcion == "5":
+            estadisticas_turnos()
         elif opcion == "0":
             break
         else:
@@ -120,4 +123,39 @@ def matriz_turnos():
 
     print("-" * 50)
     return matriz
+#fin
+
+#funcion para listar estadistica----------------------------------------------------------------------------------------
+#Lista de turnos tomados y libres por mes
+def estadisticas_turnos():
+    # Total de turnos configurables por mes (1 cancha * 3 turnos * 6 dias semanales *  4 semanas del mes)
+    TURNOS_MAXIMOS_MES = 72 
+    turnos = leer_json(RUTA_TURNOS, [])
+
+    if not turnos:
+        print("\nNo hay turnos registrados.\n")
+        return
+
+    #Extraer la parte YYYY-MM del campo fecha_hora
+    meses = sorted({ t["fecha_hora"][:7] for t in turnos })
+
+    print("\n=== ESTADÍSTICAS DE TURNOS POR MES ===\n")
+
+    for mes in meses:
+        tomados = recursion_turnos(turnos, mes)# uso recursivo
+        libres = TURNOS_MAXIMOS_MES - tomados# calculo básico        
+        print(f"Mes: {mes} → Tomados: {tomados} | Libres: {libres}")
+
+#Funcion recursiva
+def recursion_turnos(turnos, mes, i=0, contador=0):
+    # Caso base: fin de lista
+    if i == len(turnos):
+        return contador
+    
+    # Si el turno pertenece al mes (busca coincidencia con la palabra que comience con el mes buscado)
+    if turnos[i]["fecha_hora"].startswith(mes):
+        contador += 1
+
+    # Llamada recursiva
+    return recursion_turnos(turnos, mes, i + 1, contador)  
 #fin
