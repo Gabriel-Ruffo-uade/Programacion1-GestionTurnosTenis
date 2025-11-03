@@ -1,7 +1,7 @@
 from storage import leer_json, escribir_json
 from clientes import listar_clientes
 from profesores import listar_profesores
-from utils import solicitar_fecha_hora, solicitar_id
+from utils import buscar_registro_por_id, solicitar_fecha_hora, solicitar_id
 import os
 import datetime
 
@@ -63,18 +63,26 @@ def agregar_turno():
 
     listar_profesores()
     profesor_id = solicitar_id("Ingrese el ID del profesor: ",RUTA_PROFESORES)
-    fecha_hora = solicitar_fecha_hora("Ingrese fecha y hora (ej. 2025-09-21 15:00): ")
 
-    nuevo = {
-        "id": len(turnos) + 1,
-        "cliente_id": cliente_id,
-        "profesor_id": profesor_id,
-        "fecha_hora": fecha_hora
-    }
+    profesor = buscar_registro_por_id(RUTA_PROFESORES, profesor_id)
 
-    turnos.append(nuevo)
-    escribir_json(RUTA_TURNOS, turnos)
-    print("Turno registrado correctamente.")
+    if profesor:
+        rango_horario = profesor['turno']
+
+        fecha_hora = solicitar_fecha_hora("Ingrese fecha y hora (ej. 2025-09-21 15:00): ", rango_horario)
+
+        nuevo = {
+            "id": len(turnos) + 1,
+            "cliente_id": cliente_id,
+            "profesor_id": profesor_id,
+            "fecha_hora": fecha_hora
+        }
+
+        turnos.append(nuevo)
+        escribir_json(RUTA_TURNOS, turnos)
+        print("Turno registrado correctamente.")
+    else:
+        print('Error: No se pudo acceder a los datos del profesor para determinar fechas validas del turno. Por favor, vuelva a intentarlo.')
 #fin
 
 #cancela un turno existente

@@ -151,3 +151,41 @@ def es_nombre_valido(nombre):
         bool: True si el nombre es válido, False si no
     """
     return bool(nombre and nombre.strip())
+
+def es_horario_turno_valido(fecha_hora, rango_horario):
+    """
+    Valida que el horario de una fecha y hora coincida con el horario del momento del día especificado.
+
+    Argumentos:
+        fecha_hora (str): Fecha y hora en formato YYYY-MM-DD HH:MM
+        rango_horario (str): Rango a validar. Debe ser "Mañana", "Tarde" o "Noche".
+    
+    Retorna:
+        bool: True si el horario está dentro del rango válido, False si no lo está.
+    
+    Nota:
+        Si el rango_horario es inválido, también retorna False.
+    """
+
+    horarios ={
+        "mañana": [8, 12],
+        "tarde": [12, 18],
+        "noche": [18, 22]
+    }
+
+    hora = int(fecha_hora[11:13])
+
+    horario = rango_horario.lower()
+
+    valido = True
+    
+    if validar_turno(horario):
+        if hora < horarios[horario][0] or hora >= horarios[horario][1]:
+            valido = False
+            print(f"El horario no coincide con el rango horario solicitado: {rango_horario} (De {horarios[horario][0]} a {horarios[horario][1]}hs).")
+
+    else:
+        print("El rango horario ingresado no es válido. Valores permitidos: Mañana, Tarde, Noche")
+        valido = False
+
+    return valido
