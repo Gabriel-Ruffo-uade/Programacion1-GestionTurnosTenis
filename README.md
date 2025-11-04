@@ -170,6 +170,7 @@ Programacion1-GestionTurnosTenis/
 
   * Cliente y profesor deben existir
   * Formato válido de fecha y hora
+  * La fecha y hora del turno deben coincidir con los horarios disponibles del profesor
 * **Ejemplo**:
 
   * Entrada: `id_cliente=1, id_profesor=2, fechayhora=15/10/2025`
@@ -190,6 +191,10 @@ Programacion1-GestionTurnosTenis/
 #### Matriz turnos
 
 * Lista los `turnos` junto con su respectivo `cliente` y `profesor`.
+
+#### Estadisticas de turnos
+
+* Muestra la cantidad de turnos tomados y libres de cada mes
 
 ---
 
