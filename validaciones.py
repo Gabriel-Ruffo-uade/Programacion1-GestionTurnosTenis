@@ -106,16 +106,16 @@ def es_id_existente(ruta_archivo, id):
     Retorna:
         bool: True si el id es valido, False si no lo es
     """
-    valido = False
 
-    if id.isdigit() and int(id) > 0:
-        contenido = leer_json(ruta_archivo, [])
-        for i in contenido:
-            if i['id'] == int(id):
-                valido = True
-                break
-
-    return valido
+    if not (id.isdigit() and int(id) > 0):
+        return False
+    
+    contenido = leer_json(ruta_archivo, [])
+    
+    # Crea set de IDs para búsqueda instantánea
+    ids_existentes = {i['id'] for i in contenido}
+    
+    return int(id) in ids_existentes
 
 def validar_turno(turno):
     if turno.lower() in ["mañana", "tarde", "noche"]:
