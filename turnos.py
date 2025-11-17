@@ -2,14 +2,19 @@ from storage import leer_json, escribir_json
 from clientes import listar_clientes
 from profesores import listar_profesores
 from utils import buscar_registro_por_id, solicitar_fecha_hora, solicitar_id
+from validaciones import hay_contenido
 import os
 import datetime
+
+
 
 # Obtiene el directorio donde está el archivo actual
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RUTA_TURNOS = os.path.join(BASE_DIR, "data", "turnos.json")
 RUTA_CLIENTES = os.path.join(BASE_DIR, "data", "clientes.json")
 RUTA_PROFESORES = os.path.join(BASE_DIR, "data", "profesores.json")
+
+
 
 #menu----------------------------------------------------------------------------------------
 #arma el menu para gestionar los turnos
@@ -42,6 +47,8 @@ def menu_turnos():
             print("Opción inválida.")
 #fin
 
+
+
 #funciones principales----------------------------------------------------------------------------------------
 #lista los turnos guardados
 def listar_turnos():
@@ -54,48 +61,68 @@ def listar_turnos():
             print(f"- {t['id']}: Cliente {t['cliente_id']} con Profesor {t['profesor_id']} en {t['fecha_hora']}")
 #fin
 
+
+
 #agrega un turno nuevo
 def agregar_turno():
-    turnos = leer_json(RUTA_TURNOS, [])
 
-    listar_clientes()
-    cliente_id = solicitar_id("Ingrese el ID del cliente: ",RUTA_CLIENTES)
+    if hay_contenido(RUTA_CLIENTES) and hay_contenido(RUTA_PROFESORES): 
+        turnos = leer_json(RUTA_TURNOS, [])
 
-    listar_profesores()
-    profesor_id = solicitar_id("Ingrese el ID del profesor: ",RUTA_PROFESORES)
+        listar_clientes()
+        cliente_id = solicitar_id("Ingrese el ID del cliente: ",RUTA_CLIENTES)
 
-    profesor = buscar_registro_por_id(RUTA_PROFESORES, profesor_id)
+        listar_profesores()
+        profesor_id = solicitar_id("Ingrese el ID del profesor: ",RUTA_PROFESORES)
 
-    if profesor:
-        rango_horario = profesor['turno']
+        profesor = buscar_registro_por_id(RUTA_PROFESORES, profesor_id)
 
-        fecha_hora = solicitar_fecha_hora("Ingrese fecha y hora (ej. 2025-09-21 15:00): ", rango_horario)
+        if profesor:
+            rango_horario = profesor['turno']
 
-        nuevo = {
-            "id": len(turnos) + 1,
-            "cliente_id": cliente_id,
-            "profesor_id": profesor_id,
-            "fecha_hora": fecha_hora
-        }
+            fecha_hora = solicitar_fecha_hora("Ingrese fecha y hora (ej. 2025-09-21 15:00): ", rango_horario)
 
-        turnos.append(nuevo)
-        escribir_json(RUTA_TURNOS, turnos)
-        print("Turno registrado correctamente.")
+            nuevo = {
+                "id": len(turnos) + 1,
+                "cliente_id": cliente_id,
+                "profesor_id": profesor_id,
+                "fecha_hora": fecha_hora
+            }
+
+            turnos.append(nuevo)
+            escribir_json(RUTA_TURNOS, turnos)
+            print("Turno registrado correctamente.")
+        else:
+            print('Error: No se pudo acceder a los datos del profesor para determinar fechas validas del turno. Por favor, vuelva a intentarlo.')
     else:
-        print('Error: No se pudo acceder a los datos del profesor para determinar fechas validas del turno. Por favor, vuelva a intentarlo.')
+        print('No hay profesores y/o clientes registrados.')
 #fin
+
+
 
 #cancela un turno existente
 def cancelar_turno():
     turnos = leer_json(RUTA_TURNOS, [])
     listar_turnos()
 
-    id_del = int(input("Ingrese el ID del turno a cancelar: "))
-    turnos = [t for t in turnos if t["id"] != id_del]
-    escribir_json(RUTA_TURNOS, turnos)
+    if hay_contenido(RUTA_TURNOS):
+        suceso = False
+        while suceso == False:
 
-    print("Turno cancelado.")
+            id_del = int(input("Ingrese el ID del turno a cancelar: "))
+            
+            if id_del in [t["id"] for t in turnos]:
+                turnos = [t for t in turnos if t["id"] != id_del]
+                escribir_json(RUTA_TURNOS, turnos)
+                print("Turno cancelado.")
+                suceso = True
+            else:
+                print("Id no existe o no es válida. Por favor introducir Id válida.")
+        #fin de while
+
 #fin
+
+
 
 #funcion para turnos----------------------------------------------------------------------------------------
 #matriz de turnos
@@ -133,6 +160,8 @@ def matriz_turnos():
     return matriz
 #fin
 
+
+
 #funcion para listar estadistica----------------------------------------------------------------------------------------
 #Lista de turnos tomados y libres por mes
 def estadisticas_turnos():
@@ -153,6 +182,9 @@ def estadisticas_turnos():
         tomados = recursion_turnos(turnos, mes)# uso recursivo
         libres = TURNOS_MAXIMOS_MES - tomados# calculo básico        
         print(f"Mes: {mes} → Tomados: {tomados} | Libres: {libres}")
+
+
+
 
 #Funcion recursiva
 def recursion_turnos(turnos, mes, i=0, contador=0):

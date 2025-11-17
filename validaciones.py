@@ -189,3 +189,10 @@ def es_horario_turno_valido(fecha_hora, rango_horario):
         valido = False
 
     return valido
+
+
+
+def hay_contenido(ruta):#devuelve true si hay contenido y false si no
+
+    if not leer_json(ruta, False): return False #leer json ya chequea si esta vacio, devolviendo el contendio del segundo parametro si lo fuera, asi que usamos esa funcionalidad.
+    else: return True

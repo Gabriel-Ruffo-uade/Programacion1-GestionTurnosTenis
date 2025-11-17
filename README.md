@@ -168,6 +168,7 @@ Programacion1-GestionTurnosTenis/
   * `fecha y hora` (`dd/mm/yyyy hh:mm`)
 * **Validaciones (`utils` y `validaciones.py`)**:
 
+  * Los JSON de clientes y profesores deben tener por lo menos una entrada
   * Cliente y profesor deben existir
   * Fecha y hora con formato correcto y existencia real
   * Teléfono válido (solo números, 10 dígitos en formato argentino)
