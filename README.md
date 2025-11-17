@@ -169,11 +169,14 @@ Programacion1-GestionTurnosTenis/
 * **Validaciones (`utils` y `validaciones.py`)**:
 
   * Cliente y profesor deben existir
-  * Formato válido de fecha y hora
+  * Fecha y hora con formato correcto y existencia real
+  * Teléfono válido (solo números, 10 dígitos en formato argentino)
+  * Validación horaria por rango de turno (mañana/tarde/noche)
   * La fecha y hora del turno deben coincidir con los horarios disponibles del profesor
+  * Se valida que el ID exista utilizando un conjunto (set), el cual permite verificar de forma eficiente si el ID está presente y devolver un valor booleano, optimizando el uso de los recursos del sistema
 * **Ejemplo**:
 
-  * Entrada: `id_cliente=1, id_profesor=2, fechayhora=15/10/2025`
+  * Entrada: `id_cliente=1, id_profesor=2, fecha_hora="2025-10-15 18:00`
   * Salida: turno agregado a `Turnos.json`
 
 #### Modificación
@@ -200,12 +203,15 @@ Programacion1-GestionTurnosTenis/
 
 ## ✅ Validaciones Generales
 
-* IDs numéricos incrementales.
-* Nombres no vacíos.
-* Edad > 0.
-* Turnos válidos (`Mañana/Tarde/Noche`).
-* Fechas y horas con formato correcto (`dd/mm/yyyy hh:mm`).
-* JSON creados automáticamente si no existen.
+- ✔ **Texto válido:** solo letras y espacios  
+- ✔ **Fecha y hora válida:** formato `YYYY-MM-DD HH:MM`, existencia real 
+- ✔ **Teléfono válido:** 10 dígitos numéricos  
+- ✔ **ID existente:** validado mediante `set` para búsqueda eficiente  
+- ✔ **Turnos válidos:** `Mañana / Tarde / Noche`  
+- ✔ **Horario coincide con el turno:** validación de rango horario  
+- ✔ **Nombre no vacío:** evita entradas en blanco o solo espacios  
+- ✔ **IDs únicos e incrementales:** controlados desde los archivos JSON  
+- ✔ **Archivos JSON creados automáticamente** si no existen
 
 ---
 

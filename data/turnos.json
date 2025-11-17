@@ -1,17 +1,5 @@
 [
     {
-        "id": 1,
-        "cliente_id": "1",
-        "profesor_id": "1",
-        "fecha_hora": "2025-10-10 10:00"
-    },
-    {
-        "id": 2,
-        "cliente_id": "2",
-        "profesor_id": "2",
-        "fecha_hora": "2025-10-20 20:00"
-    },
-    {
         "id": 3,
         "cliente_id": "1",
         "profesor_id": "1",
