@@ -3,18 +3,14 @@ from clientes import listar_clientes
 from profesores import listar_profesores
 from utils import buscar_registro_por_id, solicitar_fecha_hora, solicitar_id
 from validaciones import hay_contenido
+from validaciones import existe_turno_duplicado_set
 import os
-import datetime
-
-
 
 # Obtiene el directorio donde está el archivo actual
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RUTA_TURNOS = os.path.join(BASE_DIR, "data", "turnos.json")
 RUTA_CLIENTES = os.path.join(BASE_DIR, "data", "clientes.json")
 RUTA_PROFESORES = os.path.join(BASE_DIR, "data", "profesores.json")
-
-
 
 #menu----------------------------------------------------------------------------------------
 #arma el menu para gestionar los turnos
@@ -47,8 +43,6 @@ def menu_turnos():
             print("Opción inválida.")
 #fin
 
-
-
 #funciones principales----------------------------------------------------------------------------------------
 #lista los turnos guardados
 def listar_turnos():
@@ -60,8 +54,6 @@ def listar_turnos():
         for t in turnos:
             print(f"- {t['id']}: Cliente {t['cliente_id']} con Profesor {t['profesor_id']} en {t['fecha_hora']}")
 #fin
-
-
 
 #agrega un turno nuevo
 def agregar_turno():
@@ -89,6 +81,10 @@ def agregar_turno():
                 "fecha_hora": fecha_hora
             }
 
+            if existe_turno_duplicado_set(RUTA_TURNOS, profesor_id, fecha_hora):
+                print("El profesor ya tiene un turno asignado en ese horario. No se dio de alta el turno.")
+                return
+
             turnos.append(nuevo)
             escribir_json(RUTA_TURNOS, turnos)
             print("Turno registrado correctamente.")
@@ -97,8 +93,6 @@ def agregar_turno():
     else:
         print('No hay profesores y/o clientes registrados.')
 #fin
-
-
 
 #cancela un turno existente
 def cancelar_turno():
@@ -121,8 +115,6 @@ def cancelar_turno():
         #fin de while
 
 #fin
-
-
 
 #funcion para turnos----------------------------------------------------------------------------------------
 #matriz de turnos
@@ -160,8 +152,6 @@ def matriz_turnos():
     return matriz
 #fin
 
-
-
 #funcion para listar estadistica----------------------------------------------------------------------------------------
 #Lista de turnos tomados y libres por mes
 def estadisticas_turnos():
@@ -183,9 +173,6 @@ def estadisticas_turnos():
         libres = TURNOS_MAXIMOS_MES - tomados# calculo básico        
         print(f"Mes: {mes} → Tomados: {tomados} | Libres: {libres}")
 
-
-
-
 #Funcion recursiva
 def recursion_turnos(turnos, mes, i=0, contador=0):
     # Caso base: fin de lista
@@ -199,3 +186,4 @@ def recursion_turnos(turnos, mes, i=0, contador=0):
     # Llamada recursiva
     return recursion_turnos(turnos, mes, i + 1, contador)  
 #fin
+

@@ -1,5 +1,6 @@
 from storage import leer_json, escribir_json
 from validaciones import validar_turno, es_id_valido, es_nombre_valido
+from validaciones import existe_registro_set
 import os
 
 # Obtiene el directorio donde está el archivo actual
@@ -61,6 +62,11 @@ def agregar_profesor():
         "nombre": nombre,
         "turno": turno
     }
+
+    #valida que no exista el nombre del profesor en el Json
+    if existe_registro_set(RUTA_PROFESORES, "nombre", nombre):
+        print("Ya existe un profesor con ese nombre. No se guardan los datos ingresados.")
+        return
 
     profesores.append(nuevo)
     escribir_json(RUTA_PROFESORES, profesores)

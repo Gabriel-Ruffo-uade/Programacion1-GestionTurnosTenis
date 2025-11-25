@@ -2,6 +2,7 @@ from storage import leer_json, escribir_json
 import os
 from utils import solicitar_texto, solicitar_telefono, generar_id
 from validaciones import es_telefono_valido
+from validaciones import existe_registro_set
 
 # Obtiene el directorio donde está el archivo actual
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -52,6 +53,11 @@ def agregar_cliente():
         "telefono": solicitar_telefono("Teléfono: ")
     }
     
+    #valida que no exista el telefono del cliente nuevo - para no duplicar los registros guardados.
+    if existe_registro_set(RUTA_CLIENTES, "telefono", nuevo["telefono"]):
+        print("Ya existe un cliente con ese teléfono. No se crea registro nuevo.")
+        return
+
     clientes.append(nuevo)
     escribir_json(RUTA_CLIENTES, clientes)
     print("Cliente agregado correctamente.")

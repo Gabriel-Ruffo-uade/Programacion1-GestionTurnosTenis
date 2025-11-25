@@ -196,3 +196,32 @@ def hay_contenido(ruta):#devuelve true si hay contenido y false si no
 
     if not leer_json(ruta, False): return False #leer json ya chequea si esta vacio, devolviendo el contendio del segundo parametro si lo fuera, asi que usamos esa funcionalidad.
     else: return True
+
+
+def existe_registro_set(ruta_archivo, campo, valor):
+    """
+    Valida si existe un registro duplicado - usando conjuntos (set).
+    Argumentos:
+        ruta_archivo (str): Ruta del archivo JSON
+        campo (str): Campo a evaluar (ej: 'telefono', 'nombre', 'fecha_hora')
+        valor (str/int): Valor a validar
+    Retorna:
+        bool: True si ya existe, False si no existe
+    """
+    registros = leer_json(ruta_archivo, [])
+    valores_existentes = { str(r.get(campo)).lower() for r in registros if campo in r }
+
+    return str(valor).lower() in valores_existentes
+
+
+def existe_turno_duplicado_set(ruta_archivo, profesor_id, fecha_hora):
+    '''
+    Docstring for existe_turno_duplicado_set
+    
+    :param ruta_archivo: Ruta donde se encuentra el archivo para buscar el id del profesor
+    :param profesor_id: Identificador unico del profesor
+    :param fecha_hora: Fecha a ser validada, si se encuentra o no
+    '''
+    turnos = leer_json(ruta_archivo, [])
+    combinaciones = { (t["profesor_id"], t["fecha_hora"]) for t in turnos }
+    return (profesor_id, fecha_hora) in combinaciones
