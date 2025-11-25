@@ -1,1 +1,27 @@
-[]
+[
+    {
+        "id": 1,
+        "nombre": "Jirafales",
+        "turno": "Mañana"
+    },
+    {
+        "id": 2,
+        "nombre": "Will",
+        "turno": "Tarde"
+    },
+    {
+        "id": 3,
+        "nombre": "Batman",
+        "turno": "Noche"
+    },
+    {
+        "id": 4,
+        "nombre": "Golum",
+        "turno": "Mañana"
+    },
+    {
+        "id": 5,
+        "nombre": "Golum",
+        "turno": "Tarde"
+    }
+]
