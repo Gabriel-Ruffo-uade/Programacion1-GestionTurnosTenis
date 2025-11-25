@@ -175,6 +175,8 @@ Programacion1-GestionTurnosTenis/
   * Validación horaria por rango de turno (mañana/tarde/noche)
   * La fecha y hora del turno deben coincidir con los horarios disponibles del profesor
   * Se valida que el ID exista utilizando un conjunto (set), el cual permite verificar de forma eficiente si el ID está presente y devolver un valor booleano, optimizando el uso de los recursos del sistema
+  * No debe haber un turno igual en la base de datos
+
 * **Ejemplo**:
 
   * Entrada: `id_cliente=1, id_profesor=2, fecha_hora="2025-10-15 18:00`
@@ -210,7 +212,7 @@ Programacion1-GestionTurnosTenis/
 - ✔ **Nombre no vacío:** evita entradas en blanco o solo espacios  
 - ✔ **IDs únicos e incrementales:** controlados desde los archivos JSON  
 - ✔ **Archivos JSON creados automáticamente:** si no existen
-- ✔ **Datos no duplicados:** mediante `set` valida que campos únicos no se dupliquen al crear un nuevo registro (EJ: nombres y números de teléfono)
+- ✔ **Datos no duplicados:** mediante `set` valida que campos únicos no se dupliquen al crear un nuevo registro (EJ: horarios, nombres y números de teléfono)
 - ✔ **Profesor registrado para una misma fecha y hora:** mediante `set` valida que al crear un nuevo turno, el profesor no se encuentre ocupado en esa fecha y hora.
 
 ---
