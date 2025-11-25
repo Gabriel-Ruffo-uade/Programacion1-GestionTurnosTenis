@@ -11,7 +11,7 @@ Aplicación por consola para gestionar la reserva de turnos de clases de tenis. 
 
 * Registrar y administrar **profesores**
 * Registrar y administrar **clientes**
-* Gestionar **turnos** (alta, baja, modificación)
+* Gestionar **turnos** (alta, baja, consulta)
 * Validar datos de entrada y evitar inconsistencias
 * Guardar la información en archivos **JSON locales**
 
@@ -19,10 +19,10 @@ Aplicación por consola para gestionar la reserva de turnos de clases de tenis. 
 
 ## 👥 Roles
 
-* **Project leader**: Amorrortu Belèn 
+* **Project leader**: Amorrortu Belén 
 * **Desarrollador**: Mottura Diana
 * **QA tester**: Oven Santiago
-* **Analista funcional**: Citoler Martìn
+* **Analista funcional**: Citoler Martín
 * **Documentación**: Ruffo Eduardo Gabriel
 
 ---
@@ -180,21 +180,18 @@ Programacion1-GestionTurnosTenis/
   * Entrada: `id_cliente=1, id_profesor=2, fecha_hora="2025-10-15 18:00`
   * Salida: turno agregado a `Turnos.json`
 
-#### Modificación
-
-* Se selecciona por `id_turno` y se cambia fecha/hora.
-
-#### Lectura
-
-* Lista turnos por mes, cliente o profesor.
-
 #### Baja
 
 * Elimina turno por `id`.
 
+#### Lectura
+
+* Lista turnos reservados indicando cliente, profesor, fecha y hora de cada uno.
+
+
 #### Matriz turnos
 
-* Lista los `turnos` junto con su respectivo `cliente` y `profesor`.
+* Muestra los `turnos` junto con su respectivo `cliente` y `profesor` en formato de tabla/ matriz.
 
 #### Estadisticas de turnos
 
@@ -212,7 +209,9 @@ Programacion1-GestionTurnosTenis/
 - ✔ **Horario coincide con el turno:** validación de rango horario  
 - ✔ **Nombre no vacío:** evita entradas en blanco o solo espacios  
 - ✔ **IDs únicos e incrementales:** controlados desde los archivos JSON  
-- ✔ **Archivos JSON creados automáticamente** si no existen
+- ✔ **Archivos JSON creados automáticamente:** si no existen
+- ✔ **Datos no duplicados:** mediante `set` valida que campos únicos no se dupliquen al crear un nuevo registro (EJ: nombres y números de teléfono)
+- ✔ **Profesor registrado para una misma fecha y hora:** mediante `set` valida que al crear un nuevo turno, el profesor no se encuentre ocupado en esa fecha y hora.
 
 ---
 
